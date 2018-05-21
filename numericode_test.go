@@ -1,9 +1,10 @@
 package numericode_test
 
 import (
-	"chilledoj/numericode"
 	"fmt"
 	"testing"
+
+	"github.com/chilledoj/numericode"
 )
 
 func TestNumericode(t *testing.T) {
@@ -59,6 +60,24 @@ func TestNumericode_ToUint32(t *testing.T) {
 		}
 	}
 }
+func TestNumericode_MaxChars(t *testing.T) {
+	tsts := []struct {
+		charset   string
+		expMaxLen int
+	}{
+		{"1234567890123456789012345678901234567890", 6},
+		{"12345678901234567890123456789012345678901", 5},
+	}
+
+	for _, tst := range tsts {
+		numericode.OverideCharSet(tst.charset)
+		act := numericode.MaxChars()
+		if act != tst.expMaxLen {
+			t.Errorf("Actual (%d) != Expected (%d) max chars. length(%d)", act, tst.expMaxLen, len(tst.charset))
+		}
+	}
+	numericode.OverideCharSet(numericode.DefaultCharSet)
+}
 
 func TestNumericode_FromString(t *testing.T) {
 	tsts := []struct {
@@ -70,6 +89,8 @@ func TestNumericode_FromString(t *testing.T) {
 		{"LARGECODE", true},
 		{"Invalid code", true},
 		{"inval", true},
+		{"      ", false},
+		{"       ", true},
 	}
 	for _, tst := range tsts {
 		n, err := numericode.FromString(tst.ip)
@@ -142,5 +163,4 @@ func TestNumericode_OverideCharSet(t *testing.T) {
 		// RESET
 		numericode.OverideCharSet(numericode.DefaultCharSet)
 	}
-
 }

@@ -56,7 +56,7 @@ func OverideCharSet(s string) {
 }
 
 /*
-The original implementation of maxChars used the correct mathematical formula
+MaxChars is now public. The original implementation of maxChars used the correct mathematical formula
 to calculate the maximum number of characters allows in the code.
 	func maxChars() int {
 		return int(math.Floor(32.0 / math.Log2(float64(len(useCharSet)))))
@@ -64,9 +64,8 @@ to calculate the maximum number of characters allows in the code.
 However, seeing as we need to store a powermap for the different lengths of
 character sets, then we can simply look up the length of the slice of powers.
 */
-
-func maxChars() int {
-	return len(powermap32[len(useCharSet)]) + 1
+func MaxChars() int {
+	return len(powermap32[len(useCharSet)]) - 1
 }
 
 // Numericode holds the slice of uint8 (we've chosen bytes here) which represent
@@ -75,7 +74,7 @@ type Numericode []byte
 
 // FromString creates the Numericode from a string
 func FromString(s string) (Numericode, error) {
-	if len(s) > maxChars() {
+	if len(s) > MaxChars() {
 		return nil, fmt.Errorf("invalid string length (%d) %s", len(s), s)
 	}
 	var n Numericode
@@ -109,7 +108,7 @@ func FromUint32(i uint32) (Numericode, error) {
 
 // ToUint32 creates a uint32 from the byte slice
 func (n Numericode) ToUint32() (uint32, error) {
-	if len(n) > maxChars() {
+	if len(n) > MaxChars() {
 		return 0, fmt.Errorf("uint32 invalid - truncation will occur")
 	}
 
