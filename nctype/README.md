@@ -1,10 +1,15 @@
 # Numericode
-## UPDATE
-This package now follows the same format as the encoding packages in the *Go* standard library. The old type version is available under the _nctype_ directory.
+## Type Version
+**UPDATE**
 
-The general purpose of this package is to allow users to define config keys
-which will only ever use a fixed, reduced character set (subset of ASCII) and to
-store it in an efficient manner within the DB. There will be scenarios where the
+This package provides a simple conversion from a string, utilising a
+fixed string character set, to an unsigned integer. The string provided is
+used in a Little Endian fashion so that adding more characters will increase
+the integer value.
+
+The general purpose of this is to allow users to define config keys which
+will only ever use a fixed, reduced character set (subset of ASCII) and to store
+it in an efficient manner within the DB. There will be scenarios where the
 storage of an unsigned 32 bit integer is less efficient than the storage of a
 certain amount of characters e.g. anything less than 4 bytes like 'CCY'.
 
@@ -23,9 +28,3 @@ a character set (of length l) for a given number of characters in the code (n).
 The maximum number that can be stored is l<sup>n</sup>. This will be stored in a 32
 bit (unsigned) integer which has a maximum value of 2<sup>32</sup>-1. Therefore the
 constrain is simply l<sup>n</sup> < 2<sup>32</sup>-1.
-
-## Potential Improvements
-+ Change input parameter to Encode to use string instead of []byte?
-
-## Contact
-If anyone actually uses this then please let me know how you get on.

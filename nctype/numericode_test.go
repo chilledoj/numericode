@@ -1,10 +1,9 @@
-package numericode_test
+package nctype_test
 
 import (
-	"fmt"
 	"testing"
 
-	"github.com/chilledoj/numericode"
+	nct "github.com/chilledoj/numericode/nctype"
 )
 
 func TestNumericode(t *testing.T) {
@@ -18,7 +17,7 @@ func TestNumericode(t *testing.T) {
 		{"//////", 4095999999}, // 39 +  39 * 40 +  39 * 1600 +  39 * 64000 +  39 * 2560000 +  39 * 102400000
 	}
 	for _, tst := range tsts {
-		act, err := numericode.FromString(tst.cde)
+		act, err := nct.FromString(tst.cde)
 		if err != nil {
 			t.Fatalf("Returned error from .FromString: %+v", err)
 		}
@@ -47,7 +46,7 @@ func TestNumericode_ToUint32(t *testing.T) {
 	}
 
 	for _, tst := range tsts {
-		n := numericode.Numericode(tst.ip)
+		n := nct.Numericode(tst.ip)
 		i, err := n.ToUint32()
 		if err != nil && !tst.expErr {
 			t.Fatalf("Return error from .ToUint32: %+v", err)
@@ -70,13 +69,13 @@ func TestNumericode_MaxChars(t *testing.T) {
 	}
 
 	for _, tst := range tsts {
-		numericode.OverideCharSet(tst.charset)
-		act := numericode.MaxChars()
+		nct.OverideCharSet(tst.charset)
+		act := nct.MaxChars()
 		if act != tst.expMaxLen {
 			t.Errorf("Actual (%d) != Expected (%d) max chars. length(%d)", act, tst.expMaxLen, len(tst.charset))
 		}
 	}
-	numericode.OverideCharSet(numericode.DefaultCharSet)
+	nct.OverideCharSet(nct.DefaultCharSet)
 }
 
 func TestNumericode_FromString(t *testing.T) {
@@ -93,7 +92,7 @@ func TestNumericode_FromString(t *testing.T) {
 		{"       ", true},
 	}
 	for _, tst := range tsts {
-		n, err := numericode.FromString(tst.ip)
+		n, err := nct.FromString(tst.ip)
 		if err != nil && !tst.experr {
 			t.Fatalf("Return error from .FromString: %+v", err)
 		}
@@ -113,24 +112,24 @@ func TestNumericode_FromUint32(t *testing.T) {
 	}{
 		{255, "FF"},
 	}
-	numericode.OverideCharSet("0123456789ABCDEF")
+	nct.OverideCharSet("0123456789ABCDEF")
 	for _, tst := range tsts {
-		n, err := numericode.FromUint32(tst.ip)
+		n, err := nct.FromUint32(tst.ip)
 		if err != nil {
 			t.Fatalf("Return error from .FromUint32: %+v", err)
 		}
-		fmt.Println(n.RawString())
+		//fmt.Println(n.RawString())
 		if n.String() != tst.exp {
 			t.Errorf("String method err:  Act(%s) != Input(%s)", n.String(), tst.exp)
 		}
 	}
-	numericode.OverideCharSet(numericode.DefaultCharSet)
+	nct.OverideCharSet(nct.DefaultCharSet)
 }
 
 func TestNumericode_String(t *testing.T) {
 	tsts := []string{"A", "CODE", "LOWER", "UPPER", "//////"}
 	for _, tst := range tsts {
-		n, err := numericode.FromString(tst)
+		n, err := nct.FromString(tst)
 		if err != nil {
 			t.Fatalf("Return error from .FromString: %+v", err)
 		}
@@ -152,8 +151,8 @@ func TestNumericode_OverideCharSet(t *testing.T) {
 	}
 
 	for _, tst := range tsts {
-		numericode.OverideCharSet(tst.charset)
-		n, err := numericode.FromString(tst.ip)
+		nct.OverideCharSet(tst.charset)
+		n, err := nct.FromString(tst.ip)
 		if err != nil {
 			t.Errorf("Return error from .FromString: %+v", err)
 		}
@@ -161,6 +160,6 @@ func TestNumericode_OverideCharSet(t *testing.T) {
 			t.Errorf("Actual (%d) != (%d) Expected", v, tst.exp)
 		}
 		// RESET
-		numericode.OverideCharSet(numericode.DefaultCharSet)
+		nct.OverideCharSet(nct.DefaultCharSet)
 	}
 }

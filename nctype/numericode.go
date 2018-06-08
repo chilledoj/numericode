@@ -1,4 +1,4 @@
-/*Package numericode provides a simple conversion from a string, utilising a
+/*Package nctype provides a simple conversion from a string, utilising a
 fixed string character set, to an unsigned integer. The string provided is
 used in a Little Endian fashion so that adding more characters will increase
 the integer value.
@@ -27,7 +27,7 @@ The maximum number that can be stored is l<sup>n</sup>. This will be stored in a
 bit (unsigned) integer which has a maximum value of 2<sup>32-1</sup>. Therefore the
 constrain is simply l<sup>n</sup> < 2<sup>32-1</sup>.
 */
-package numericode
+package nctype
 
 import (
 	"encoding/json"
@@ -93,14 +93,14 @@ func FromUint32(i uint32) (Numericode, error) {
 	l := len(useCharSet)
 	str := []byte{}
 
-	fmt.Printf("FromUint32: %d\n", i)
+	//fmt.Printf("FromUint32: %d\n", i)
 	num := i
 
 	for num > 0 {
 		x := math.Mod(float64(num), float64(l))
 		num = num / uint32(l)
 
-		fmt.Printf("NUM: %d, REM: %v, %s\n", num, int(x), string(useCharSet[int(x)]))
+		//fmt.Printf("NUM: %d, REM: %v, %s\n", num, int(x), string(useCharSet[int(x)]))
 		str = append(str, uint8(x))
 	}
 	return Numericode(str), nil
