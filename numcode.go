@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-const stdCharSet = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/"
+const stdCharSet = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_."
 
 // Encoding holds the charset for encoding
 type Encoding struct {

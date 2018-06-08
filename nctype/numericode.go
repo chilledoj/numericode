@@ -37,8 +37,8 @@ import (
 )
 
 // DefaultCharSet is the charset used. It allows codes up to 6 chars long
-//  ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/
-const DefaultCharSet string = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/"
+//  ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.
+const DefaultCharSet string = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_."
 
 var useCharSet = DefaultCharSet
 
@@ -57,7 +57,7 @@ func OverideCharSet(s string) {
 
 /*
 MaxChars is now public. The original implementation of maxChars used the correct mathematical formula
-to calculate the maximum number of characters allows in the code.
+to calculate the maximum number of characters allowed in the code.
 	func maxChars() int {
 		return int(math.Floor(32.0 / math.Log2(float64(len(useCharSet)))))
 	}

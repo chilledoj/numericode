@@ -13,8 +13,9 @@ func TestNumericode(t *testing.T) {
 		exp uint32
 	}{
 		{"A", 1},
+		{" A", 40},
 		{"CODE", 327003},       //  3 + 15 * 40^1 +  4 * 40^2 +  5 * 40^3
-		{"//////", 4095999999}, // 39 +  39 * 40 +  39 * 1600 +  39 * 64000 +  39 * 2560000 +  39 * 102400000
+		{"......", 4095999999}, // 39 +  39 * 40 +  39 * 1600 +  39 * 64000 +  39 * 2560000 +  39 * 102400000
 	}
 	for _, tst := range tsts {
 		act, err := nct.FromString(tst.cde)
@@ -127,7 +128,7 @@ func TestNumericode_FromUint32(t *testing.T) {
 }
 
 func TestNumericode_String(t *testing.T) {
-	tsts := []string{"A", "CODE", "LOWER", "UPPER", "//////"}
+	tsts := []string{"A", "CODE", "LOWER", "UPPER", "......"}
 	for _, tst := range tsts {
 		n, err := nct.FromString(tst)
 		if err != nil {

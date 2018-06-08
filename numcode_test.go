@@ -29,7 +29,7 @@ func TestEncoding_Encode(t *testing.T) {
 	}{
 		{"Std - 'A'", nc.StdEncoding, "A", 1},
 		{"Std - 'Z'", nc.StdEncoding, "Z", 26},
-		{"Std - '/'", nc.StdEncoding, "/", 39},
+		{"Std - '.'", nc.StdEncoding, ".", 39},
 		{"Std - ' A'", nc.StdEncoding, " A", 40},
 		{"Std - '  A'", nc.StdEncoding, "  A", 1600},
 		// This should cause a silent fail - hence 0
@@ -59,7 +59,7 @@ func TestEncoding_EncodeToUint32(t *testing.T) {
 	}{
 		{"Std - 'A'", nc.StdEncoding, "A", 1},
 		{"Std - 'Z'", nc.StdEncoding, "Z", 26},
-		{"Std - '/'", nc.StdEncoding, "/", 39},
+		{"Std - '.'", nc.StdEncoding, ".", 39},
 		{"Std - ' A'", nc.StdEncoding, " A", 40},
 		{"Std - '  A'", nc.StdEncoding, "  A", 1600},
 		{"Std - '1234567'", nc.StdEncoding, "1234567", 0},
@@ -86,7 +86,7 @@ func TestEncoding_Decode(t *testing.T) {
 		// Note tha the following tests include padding with the zero character - which is space
 		{"Std - 'A'", nc.StdEncoding, "A     ", 1, true},
 		{"Std - 'Z'", nc.StdEncoding, "Z     ", 26, true},
-		{"Std - '/'", nc.StdEncoding, "/     ", 39, true},
+		{"Std - '.'", nc.StdEncoding, ".     ", 39, true},
 		{"Std - ' A'", nc.StdEncoding, " A    ", 40, true},
 		{"Std - '  A'", nc.StdEncoding, "  A   ", 1600, true},
 		{"Std - '  A'", nc.StdEncoding, "  A", 1600, false},
@@ -116,15 +116,24 @@ func ExampleEncoding_Encode() {
 func ExampleEncoding_EncodeToUint32() {
 	e := nc.StdEncoding
 
-	i := e.EncodeToUint32([]byte("NCODE"))
-	fmt.Println(i) // Outputs: 3
+	i := e.EncodeToUint32([]byte("CODE"))
+	fmt.Println(i) // Output: 327003
 }
 
 func ExampleEncoding_Decode() {
 	e := nc.NewEncoding("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 	dst := make([]byte, 6)
 	e.Decode(dst, 1, true)
-	fmt.Println(dst) // Outputs: "BAAAAA"
-	e.Decode(dst, 1, false)
-	fmt.Println(dst) // Outputs: "B"
+	fmt.Printf("%s\n", dst)
+	dst2 := make([]byte, 2)
+	e.Decode(dst2, 1, false)
+	for _, v := range dst2 {
+		if v > 0 {
+			fmt.Printf("%v", string(v))
+		}
+	}
+	fmt.Println()
+	// Output:
+	// BAAAAA
+	// B
 }
